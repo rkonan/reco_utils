@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reco_utils"
+version = "0.1.0"
+description = "Outils pour la détection de la qualité des données et l'évaluation de modèles"
+authors = [
+    { name = "Votre Nom", email = "votre.email@example.com" }
+]
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.7"
+
+dependencies = [
+    "tensorflow>=2.0",
+    "numpy",
+    "pandas",
+    "scipy",
+    "matplotlib"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+
+[project.urls]
+Homepage = "https://github.com/rkonan/reco_utils"
