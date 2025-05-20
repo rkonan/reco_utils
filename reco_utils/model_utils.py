@@ -1,4 +1,8 @@
 from tensorflow.keras import layers, models
+import tensorflow as tf
+from keras.saving import register_keras_serializable
+from transformers import TFAutoModel, AutoConfig, ViTFeatureExtractor,TFAutoModelTimeHistory
+
 
 from .constants import *
 from data_utils import get_img_size
@@ -46,3 +50,49 @@ def compute_class_weights(train_dataset, class_names):
     weight_dict = {i: w for i, w in enumerate(class_weights)}
     print("Poids calculés :", weight_dict)
     return weight_dict, class_counts
+
+
+
+
+# === Modèle Vit sérializable  ===
+@register_keras_serializable()
+class ViTClassifier(tf.keras.Model):
+    def __init__(self, num_classes=5, vit_model_name="google/vit-base-patch16-224", **kwargs):
+        super().__init__(**kwargs)
+        self.vit_model_name = vit_model_name
+        self.feature_extractor = ViTFeatureExtractor.from_pretrained(vit_model_name)
+        self.vit = TFAutoModelTimeHistory.from_pretrained(vit_model_name)
+        self.vit.trainable = False
+        self.pool = tf.keras.layers.GlobalAveragePooling1D()
+        self.dense1 = tf.keras.layers.Dense(128, activation='relu')
+        self.dropout = tf.keras.layers.Dropout(0.3)
+        self.classifier = tf.keras.layers.Dense(num_classes, activation='softmax')
+
+    def call(self, inputs, training=False):
+        inputs = tf.cast(inputs, tf.float32) / 255.0
+        pixel_values = (inputs - self.feature_extractor .image_mean) / self.feature_extractor .image_std
+        pixel_values = tf.transpose(pixel_values, perm=[0, 3, 1, 2])
+        outputs = self.vit(pixel_values=pixel_values, training=training).last_hidden_state
+        x = self.pool(outputs)
+        x = self.dense1(x)
+        x = self.dropout(x, training=training)
+        return self.classifier(x)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            "num_classes": self.classifier.units,
+            "vit_model_name": self.vit_model_name
+        })
+        return config
+
+    @classmethod
+    def from_config(cls, config):
+        return cls(**config)
+
+class RandomModel:
+    def __init__(self,num_classes):
+        self.num_classes = num_classes
+    def predict(self,x,verbose=0):
+        pred=np.random.random((len(x),self.num_classes))
+        return pred

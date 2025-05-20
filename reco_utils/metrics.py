@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
+from .model_utils import RandomModel
 
 def plot_hist(history, oldhist=None):
     plt.figure(figsize=(12, 4))

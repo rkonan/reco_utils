@@ -1,4 +1,5 @@
 import tensorflow as tf
+from keras.saving import register_keras_serializable
 #=== SparseFocalLoss serializable ===
 @register_keras_serializable()
 class SparseFocalLoss(tf.keras.losses.Loss):
