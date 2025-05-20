@@ -1,6 +1,6 @@
 from tensorflow.keras import layers, models
 
-from config.constants import *
+from .constants import *
 
 def get_preprocess_input(model_type):
     if model_type == "EfficientNetV2M":
