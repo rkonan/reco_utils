@@ -1,7 +1,7 @@
 from tensorflow.keras import layers, models
 import tensorflow as tf
 from keras.saving import register_keras_serializable
-from transformers import TFAutoModel, AutoConfig, ViTFeatureExtractor,TFAutoModelTimeHistory
+from transformers import TFAutoModel, AutoConfig, ViTFeatureExtractor
 
 
 from .constants import *
@@ -61,7 +61,7 @@ class ViTClassifier(tf.keras.Model):
         super().__init__(**kwargs)
         self.vit_model_name = vit_model_name
         self.feature_extractor = ViTFeatureExtractor.from_pretrained(vit_model_name)
-        self.vit = TFAutoModelTimeHistory.from_pretrained(vit_model_name)
+        self.vit = TFAutoModel.from_pretrained(vit_model_name)
         self.vit.trainable = False
         self.pool = tf.keras.layers.GlobalAveragePooling1D()
         self.dense1 = tf.keras.layers.Dense(128, activation='relu')
