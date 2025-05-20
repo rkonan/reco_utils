@@ -1,3 +1,8 @@
+import tensorflow as tf
+import time
+from keras.callbacks import Callback,ModelCheckpoint
+import os
+import zipfile
 
 #=== Callback pour afficher le learning rate ===
 class PrintLR(tf.keras.callbacks.Callback):

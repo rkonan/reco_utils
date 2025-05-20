@@ -1,6 +1,7 @@
 from tensorflow.keras import layers, models
 
 from .constants import *
+from data_utils import get_img_size
 
 def get_preprocess_input(model_type):
     if model_type == "EfficientNetV2M":
