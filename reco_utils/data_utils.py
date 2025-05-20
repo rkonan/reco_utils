@@ -1,5 +1,5 @@
 import tensorflow as tf
-from config.constants import *
+from constants import *
 import os
 
 def get_img_size(model_type):
