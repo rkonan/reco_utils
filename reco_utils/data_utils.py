@@ -12,21 +12,21 @@ def get_img_size(model_type):
     }
     return sizes.get(model_type, 224)
 
-def load_dataset(model_type, batch_size=BATCH_SIZE):
+def load_dataset(model_type,train_path, test_path, batch_size=BATCH_SIZE):
     img_size = get_img_size(model_type)
 
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        train_dataset, validation_split=0.15, subset="training", seed=SEED,
+        train_path, validation_split=0.15, subset="training", seed=SEED,
         image_size=(img_size, img_size), batch_size=batch_size, label_mode="int"
     )
 
     val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        train_dataset, validation_split=0.15, subset="validation", seed=SEED,
+        train_path, validation_split=0.15, subset="validation", seed=SEED,
         image_size=(img_size, img_size), batch_size=batch_size, label_mode="int"
     )
 
     test_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        test_dataset, image_size=(img_size, img_size), label_mode="int"
+        test_path, image_size=(img_size, img_size), label_mode="int"
     )
 
     return train_ds, val_ds, test_ds
