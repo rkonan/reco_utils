@@ -104,4 +104,4 @@ def build_mock_model(input_shape=(224, 224, 3), num_classes=5):
     x = tf.keras.layers.Dense(32, activation='relu')(x)
     outputs = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
     model = tf.keras.Model(inputs, outputs)
-return model
+    return model
