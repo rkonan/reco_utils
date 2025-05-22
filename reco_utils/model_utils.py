@@ -97,11 +97,11 @@ class RandomModel:
     def predict(self,x,verbose=0):
         pred=np.random.random((len(x),self.num_classes))
         return pred
-#====== un modke model pour tester 
+#====== un mock model pour tester 
 def build_mock_model(input_shape=(224, 224, 3), num_classes=5):
-inputs = tf.keras.Input(shape=input_shape)
-x = tf.keras.layers.Flatten()(inputs)
-x = tf.keras.layers.Dense(32, activation='relu')(x)
-outputs = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
-model = tf.keras.Model(inputs, outputs)
+    inputs = tf.keras.Input(shape=input_shape)
+    x = tf.keras.layers.Flatten()(inputs)
+    x = tf.keras.layers.Dense(32, activation='relu')(x)
+    outputs = tf.keras.layers.Dense(num_classes, activation='softmax')(x)
+    model = tf.keras.Model(inputs, outputs)
 return model
