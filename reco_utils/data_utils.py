@@ -68,7 +68,9 @@ def targeted_batch_augment(images, labels, target_ids=None):
     return augmented_images, labels
 
 #========= pour créer des mock datatset de tests 
-def create_mock_dataset(num_samples=100, img_size=224, num_classes=5):
+def create_mock_dataset(name =None,num_samples=100, img_size=224, num_classes=5):
+    if name is None:
+        img_size=get_img_size(name)
     x = tf.random.uniform((num_samples, img_size, img_size, 3))
     y = tf.random.uniform((num_samples,), minval=0, maxval=num_classes, dtype=tf.int32)
     ds = tf.data.Dataset.from_tensor_slices((x, y))
