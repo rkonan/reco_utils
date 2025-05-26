@@ -9,6 +9,7 @@ def get_img_size(model_type):
         "ResNet101V2": IMG_SIZE_ResNet101V2,
         "ViT": IMG_SIZE_ViT,
         "ConvNeXt": IMG_SIZE_ConvNeXt,
+        "Efficientnetb3": IMG_SIZE_EfficientNetB3
     }
     return sizes.get(model_type, 224)
 

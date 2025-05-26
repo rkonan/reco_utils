@@ -16,6 +16,7 @@ IMG_SIZE_ResNet50V2 = 224
 IMG_SIZE_ResNet101V2 = 224
 IMG_SIZE_ViT = 224
 IMG_SIZE_ConvNeXt = 224
+IMG_SIZE_EfficientNetB3 = 300
 
 # Paths
 train_dataset = "/.../train"  # Remplace par une variable d’environnement si nécessaire
