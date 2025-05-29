@@ -25,4 +25,3 @@ def send_email(subject="Fin d'exécution", body="Le job est terminé."):
         print("Email envoyé.")
     except Exception as e:
         print(f"Erreur d'envoi : {e}")
-
