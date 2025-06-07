@@ -46,6 +46,7 @@ def targeted_batch_augment(images, labels, target_ids=None):
             img_aug = tf.image.random_contrast(img_aug, 0.8, 1.2)
             img_aug = tf.image.random_saturation(img_aug, 0.8, 1.2)
             img_aug = tf.image.random_hue(img_aug, 0.05)
+            img_aug = tf.image.random_crop(img_aug,size=(224,224,3))
             return img_aug
 
         if isinstance(apply_to_all, tf.Tensor):
