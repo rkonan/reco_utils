@@ -17,7 +17,9 @@ def get_preprocess_input(model_type):
     elif model_type == "ViT":
         return lambda x: x
     elif "ConvNeXt" in model_type:
-        return lambda x: x / 255.0
+        mean = tf.constant([0.485, 0.456, 0.406], dtype=tf.float32)
+        std = tf.constant([0.229, 0.224, 0.225], dtype=tf.float32)
+        return lambda x: (x / 255.0 - mean) / std
     
 
 def build_model(base, model_type):
