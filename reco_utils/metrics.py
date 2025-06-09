@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix, ConfusionMatrixDisplay
 from .model_utils import RandomModel
-
+import torch
 def plot_hist(history, oldhist=None):
     plt.figure(figsize=(12, 4))
     plt.subplot(121)
