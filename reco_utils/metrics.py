@@ -51,3 +51,34 @@ def get_true_values_with_predictions(test_set, model=None):
         'prediction_proba': predictions_proba,
         'true_value': true_values
     })
+
+# -------------------------
+@torch.no_grad()
+def get_true_values_with_predictions_torch(test_loader, model, device='cuda'):
+    model.eval()
+    model.to(device)
+
+    all_preds = []
+    all_pred_probas = []
+    all_true = []
+    all_pred_vectors = []
+
+    for inputs, labels in tqdm(test_loader, desc="Predicting", unit="batch"):
+        inputs = inputs.to(device)
+        outputs = model(inputs)
+
+        probas = torch.softmax(outputs, dim=1)
+        predicted_classes = torch.argmax(probas, dim=1)
+        confidence_scores = torch.max(probas, dim=1).values
+
+        all_preds.extend(predicted_classes.cpu().numpy())
+        all_pred_probas.extend(confidence_scores.cpu().numpy())
+        all_pred_vectors.extend(probas.cpu().numpy())
+        all_true.extend(labels.cpu().numpy())
+
+    return pd.DataFrame({
+        "prediction": all_preds,
+        "prediction_proba": all_pred_probas,
+        "true_value": all_true,
+        "proba_vector": all_pred_vectors
+    })
