@@ -70,51 +70,52 @@ def get_true_values_with_predictions(test_set, model=None, model_embedding=None)
         df["embedding"] = embeddings
 
     return df
-@torch.no_grad()
-def get_true_values_with_predictions_torch(test_loader, model, device='cuda', use_embeddings=True):
-    model.eval()
-    model.to(device)
 
-    all_preds = []
-    all_pred_probas = []
-    all_true = []
-    all_pred_vectors = []
-    all_embeddings = []
-    sample_ids = []
+# @torch.no_grad()
+# def get_true_values_with_predictions_torch(test_loader, model, device='cuda', use_embeddings=True):
+#     model.eval()
+#     model.to(device)
 
-    for batch_idx, (inputs, labels) in enumerate(tqdm(test_loader, desc="Predicting", unit="batch")):
-        inputs = inputs.to(device)
-        outputs = model(inputs)
+#     all_preds = []
+#     all_pred_probas = []
+#     all_true = []
+#     all_pred_vectors = []
+#     all_embeddings = []
+#     sample_ids = []
 
-        probas = torch.softmax(outputs, dim=1)
-        predicted_classes = torch.argmax(probas, dim=1)
-        confidence_scores = torch.max(probas, dim=1).values
+#     for batch_idx, (inputs, labels) in enumerate(tqdm(test_loader, desc="Predicting", unit="batch")):
+#         inputs = inputs.to(device)
+#         outputs = model(inputs)
 
-        all_preds.extend(predicted_classes.cpu().numpy())
-        all_pred_probas.extend(confidence_scores.cpu().numpy())
-        all_pred_vectors.extend(probas.cpu().numpy())
-        all_true.extend(labels.cpu().numpy())
-        sample_ids.extend([f"sample_{batch_idx}_{i}" for i in range(len(labels))])
+#         probas = torch.softmax(outputs, dim=1)
+#         predicted_classes = torch.argmax(probas, dim=1)
+#         confidence_scores = torch.max(probas, dim=1).values
 
-        # Si le modèle a un forward_features (par ex. Swin, ConvNeXt)
-        if use_embeddings:
-            if hasattr(model, "forward_features"):
-                embeddings = model.forward_features(inputs)
-                if isinstance(embeddings, tuple):  # certains modèles renvoient des tuples
-                    embeddings = embeddings[0]
-                all_embeddings.extend(embeddings.cpu().numpy())
-            else:
-                raise AttributeError("Le modèle ne possède pas de méthode `forward_features()`.")
+#         all_preds.extend(predicted_classes.cpu().numpy())
+#         all_pred_probas.extend(confidence_scores.cpu().numpy())
+#         all_pred_vectors.extend(probas.cpu().numpy())
+#         all_true.extend(labels.cpu().numpy())
+#         sample_ids.extend([f"sample_{batch_idx}_{i}" for i in range(len(labels))])
 
-    df = pd.DataFrame({
-        "sample_id": sample_ids,
-        "prediction": all_preds,
-        "prediction_proba": all_pred_probas,
-        "true_value": all_true,
-        "proba_vector": all_pred_vectors
-    })
+#         # Si le modèle a un forward_features (par ex. Swin, ConvNeXt)
+#         if use_embeddings:
+#             if hasattr(model, "forward_features"):
+#                 embeddings = model.forward_features(inputs)
+#                 if isinstance(embeddings, tuple):  # certains modèles renvoient des tuples
+#                     embeddings = embeddings[0]
+#                 all_embeddings.extend(embeddings.cpu().numpy())
+#             else:
+#                 raise AttributeError("Le modèle ne possède pas de méthode `forward_features()`.")
 
-    if use_embeddings:
-        df["embedding"] = all_embeddings
+#     df = pd.DataFrame({
+#         "sample_id": sample_ids,
+#         "prediction": all_preds,
+#         "prediction_proba": all_pred_probas,
+#         "true_value": all_true,
+#         "proba_vector": all_pred_vectors
+#     })
 
-    return df
+#     if use_embeddings:
+#         df["embedding"] = all_embeddings
+
+#     return df
